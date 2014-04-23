@@ -18,28 +18,29 @@ function _typematch(obj, templ) {
 
     for (var i = 0; i < templkeys.length; i++) {
         var key = templkeys[i];
+        var expect = (typeof templ[key] === 'object') ? 'object' : templ[key];
+        if (typeof expect !== 'string') {
+            throw new TypeError('Invalid template value ' + typeof expect + ' for key ' +
+                                key);
+        }
 
         if (!obj.hasOwnProperty(key)) {
-            if (templ[key].indexOf('optional') === -1) {
-                throw new TypeError('Missing key: ' + templ[key] + ':' + key);
+            if (expect.indexOf('optional') === -1) {
+                throw new TypeError('Missing key: ' + expect + ':' + key);
             } else {
                 continue;
             }
         }
 
-        var expect = templ[key];
-        if (typeof expect === 'object') {
+        if (expect === 'object') {
             _typematch(obj[key], templ[key]);
-        } else if (typeof expect === 'string' ) {
+        } else {
             var actual = type(obj[key]);
             if (expect.indexOf(type(obj[key])) === -1 &&
                 expect.indexOf('*') === -1) {
                 throw new TypeError('Expected key ' + key + ' to be of type ' +
                                     expect + ', instead got ' + actual);
             }
-        } else {
-            throw new TypeError('Invalid template value ' + typeof expect + ' for key ' +
-                                key);
         }
     }
 
