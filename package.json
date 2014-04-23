@@ -1,0 +1,6 @@
+{
+    "author": "Calvin Montgomery",
+    "name": "json-typecheck",
+    "description": "Check JSON objects against a type template",
+    "version": "0.0.1"
+}
