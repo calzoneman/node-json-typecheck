@@ -24,16 +24,12 @@ function _typematch(obj, templ) {
         }
 
         var expect = templ[key];
-        if (Array.isArray(expect)) {
-            expect = expect.join(',');
-        } else if (typeof expect === 'object') {
+        if (typeof expect === 'object') {
             _typematch(obj[key], templ[key]);
-            continue;
-        }
-
-        if (typeof expect === 'string' ) {
+        } else if (typeof expect === 'string' ) {
             var actual = type(obj[key]);
-            if (expect.indexOf(type(obj[key])) === -1) {
+            if (expect.indexOf(type(obj[key])) === -1 &&
+                expect.indexOf('*') === -1) {
                 throw new TypeError('Expected key ' + key + ' to be of type ' +
                                     expect + ', instead got ' + actual);
             }
@@ -60,7 +56,7 @@ module.exports = function typecheck(obj, templ, cb) {
         if (cb) {
             cb(e, null);
         } else {
-            cb(null, obj);
+            throw e;
         }
     }
 };
