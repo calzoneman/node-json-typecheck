@@ -19,8 +19,12 @@ function _typematch(obj, templ) {
     for (var i = 0; i < templkeys.length; i++) {
         var key = templkeys[i];
 
-        if (!obj.hasOwnProperty(templkeys[i])) {
-            throw new TypeError('Missing key: ' + templ[key] + ':' + key);
+        if (!obj.hasOwnProperty(key)) {
+            if (templ[key].indexOf('optional') === -1) {
+                throw new TypeError('Missing key: ' + templ[key] + ':' + key);
+            } else {
+                continue;
+            }
         }
 
         var expect = templ[key];
@@ -48,7 +52,13 @@ function _typematch(obj, templ) {
 
 module.exports = function typecheck(obj, templ, cb) {
     try {
-        _typematch(obj, templ);
+        if (type(obj) !== type(templ)) {
+            throw new TypeError('Expected type ' + type(templ) + ', got ' +
+                                type(obj));
+        }
+        if (type(templ) === 'object') {
+            _typematch(obj, templ);
+        }
         if (cb) {
             cb(null, obj);
         }
