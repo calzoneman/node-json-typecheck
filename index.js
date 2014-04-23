@@ -1,7 +1,9 @@
 function type(v) {
     switch (typeof v) {
         case 'object':
-            if (Array.isArray(v)) {
+            if (v === null) {
+                return 'null';
+            } else if (Array.isArray(v)) {
                 return 'array';
             }
             return 'object';
