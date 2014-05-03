@@ -2,6 +2,6 @@
     "author": "Calvin Montgomery",
     "name": "json-typecheck",
     "description": "Check JSON objects against a type template",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "repository": "https://github.com/calzoneman/node-json-typecheck"
 }
