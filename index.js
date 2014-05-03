@@ -61,11 +61,11 @@ module.exports = function typecheck(obj, templ, cb) {
             _typematch(obj, templ);
         }
         if (cb) {
-            cb(null, obj);
+            process.nextTick(cb.bind(null, null, obj));
         }
     } catch (e) {
         if (cb) {
-            cb(e, null);
+            process.nextTick(cb.bind(null, e, null));
         } else {
             throw e;
         }
